@@ -9,15 +9,11 @@ from typing import Sequence, Union
 
 import sqlalchemy as sa
 from alembic import op
-from passlib.context import CryptContext
 
 revision: str = "20260319_0001"
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
-
-pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 
 def upgrade() -> None:
     op.create_table(
@@ -154,8 +150,8 @@ def upgrade() -> None:
 
     op.execute("INSERT INTO roles(name) VALUES ('Student'), ('Apartment Resident'), ('Staff'), ('Admin')")
 
-    admin_hash = pwd.hash("admin")
-    student_hash = pwd.hash("student")
+    admin_hash = "$2b$12$tF90DUizTMgF3Rlk.wl2N.8/6CWxP4TjkJrMq0FdMMtdfFvOm6N2K"
+    student_hash = "$2b$12$N2eEYhN8fCC/eV4UrJjHhuy4u9ww69bgDPPQjKJfLMmxYe56PmYdq"
 
     op.execute(
         sa.text("INSERT INTO users(username, password_hash) VALUES (:username, :password_hash) ON CONFLICT (username) DO NOTHING")
