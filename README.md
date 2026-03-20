@@ -42,3 +42,23 @@ alembic upgrade head
 - Admin API: menu upload, meal counts, CSV student import, token period update
 - Seed data on startup: admin/admin and student 123/student
 - CMU-themed frontend integrated with backend endpoints (no mock dashboard state)
+
+## Vercel deployment (frontend)
+
+This repository is a monorepo. The Next.js app is inside `frontend/`, so Vercel must build from that folder.
+
+1. In Vercel, import this GitHub repository.
+2. Open Project Settings -> General -> Root Directory.
+3. Set Root Directory to `frontend`.
+4. Framework preset should be Next.js.
+5. Build command: `npm run build` (default is fine).
+6. Install command: `npm install` (default is fine).
+7. Add environment variable:
+	- `NEXT_PUBLIC_API_BASE_URL` = your deployed backend URL
+8. Redeploy.
+
+If Root Directory is not set to `frontend`, Vercel may return a 404 NOT_FOUND page because it is trying to deploy from the repository root.
+
+## Backend hosting note
+
+The FastAPI backend in `backend/` is not configured as a Vercel serverless project in this repository. Deploy it as a separate service (for example Railway, Render, Fly.io, or a VPS), then point `NEXT_PUBLIC_API_BASE_URL` to that backend URL.
